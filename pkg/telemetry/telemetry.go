@@ -72,13 +72,11 @@ func (t *Telemetry) Initialize(telemetryDisabled bool, stepName, token string) {
 
 	if t.BaseURL == "" {
 		// Pendo baseURL
-		// t.BaseURL = "https://app.pendo.io"
-		t.BaseURL = "https://data-dev-u3000-tcp.splunk.tools.sap:9997"
+		t.BaseURL = "https://app.pendo.io"
 	}
 	if t.Endpoint == "" {
 		// Pendo endpoint
-		// t.Endpoint = "/data/track"
-		t.Endpoint = ""
+		t.Endpoint = "/data/track"
 	}
 	if len(LibraryRepository) == 0 {
 		LibraryRepository = "https://github.com/n/a"
