@@ -160,11 +160,7 @@ func (t *Telemetry) Send() {
 	h := http.Header{}
 	h.Add("Content-Type", "application/json")
 	h.Add("X-Pendo-Integration-Key", t.PendoToken)
-	res, err := t.client.SendRequest(http.MethodPost, t.BaseURL+t.Endpoint, bytes.NewReader(b), h, nil)
-	if err != nil {
-		log.Entry().Println("err:", err)
-	}
-	log.Entry().Println(res.Status)
+	t.client.SendRequest(http.MethodPost, t.BaseURL+t.Endpoint, bytes.NewReader(b), h, nil)
 }
 
 func (t *Telemetry) logStepTelemetryData() {
