@@ -68,7 +68,7 @@ func (t *Telemetry) Initialize(telemetryDisabled bool, stepName, token string) {
 		t.client = &piperhttp.Client{}
 	}
 
-	t.client.SetOptions(piperhttp.ClientOptions{MaxRequestDuration: 5 * time.Second, MaxRetries: -1})
+	t.client.SetOptions(piperhttp.ClientOptions{MaxRequestDuration: 5 * time.Second, MaxRetries: -1, TransportSkipVerification: true})
 
 	if t.BaseURL == "" {
 		// Pendo baseURL
