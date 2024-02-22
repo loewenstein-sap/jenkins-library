@@ -290,6 +290,9 @@ func sonarExecuteScanMetadata() config.StepData {
 					{Name: "sonarTokenCredentialsId", Description: "Jenkins 'Secret text' credentials ID containing the token used to authenticate with the Sonar Server.", Type: "jenkins"},
 					{Name: "githubTokenCredentialsId", Description: "Jenkins 'Secret text' credentials ID containing the token used to authenticate with the Github Server.", Type: "jenkins"},
 				},
+				Resources: []config.StepResources{
+					{Type: "stash"},
+				},
 				Parameters: []config.StepParameters{
 					{
 						Name:        "instance",
