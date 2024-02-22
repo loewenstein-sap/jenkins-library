@@ -279,7 +279,8 @@ spec:
           - PARAMETERS
         aliases:
           - name: maven/m2Path
-
+    resources:
+      - type: stash
   outputs:
     resources:
       - name: reports
