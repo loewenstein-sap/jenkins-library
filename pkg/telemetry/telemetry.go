@@ -72,11 +72,12 @@ func (t *Telemetry) Initialize(telemetryDisabled bool, stepName, token string) {
 
 	if t.BaseURL == "" {
 		// Pendo baseURL
-		t.BaseURL = "https://app.pendo.io"
+		// t.BaseURL = "https://app.pendo.io"
+		t.BaseURL = "https://data-dev-u3000-tcp.splunk.tools.sap:9997"
 	}
 	if t.Endpoint == "" {
 		// Pendo endpoint
-		t.Endpoint = "/data/track"
+		t.Endpoint = ""
 	}
 	if len(LibraryRepository) == 0 {
 		LibraryRepository = "https://github.com/n/a"
@@ -123,12 +124,12 @@ func (t *Telemetry) SetData(customData *CustomData) {
 		BaseData:   t.baseData,
 		CustomData: *customData,
 	}
-	pipelineID := readPipelineID(pipelineIDPath)
+	_ = readPipelineID(pipelineIDPath)
 	t.Pendo = Pendo{
 		Type:       "track",
 		Event:      t.baseData.StepName,
-		AccountID:  pipelineID,
-		VisitorID:  pipelineID,
+		AccountID:  "ttestPipelineID",
+		VisitorID:  "ttestPipelineID",
 		Timestamp:  time.Now().UnixMilli(),
 		Properties: &t.data,
 	}
