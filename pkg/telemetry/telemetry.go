@@ -72,12 +72,12 @@ func (t *Telemetry) Initialize(telemetryDisabled bool, stepName, token string) {
 
 	if t.BaseURL == "" {
 		// Pendo baseURL
-		// t.BaseURL = "https://app.pendo.io"
-		t.BaseURL = "https://data-dev-u3000-tcp.splunk.tools.sap:9997"
+		t.BaseURL = "https://app.pendo.io"
+		// t.BaseURL = "https://data-dev-u3000-tcp.splunk.tools.sap:9997"
 	}
 	if t.Endpoint == "" {
 		// Pendo endpoint
-		t.Endpoint = ""
+		t.Endpoint = "/data/track"
 	}
 	if len(LibraryRepository) == 0 {
 		LibraryRepository = "https://github.com/n/a"
@@ -160,7 +160,11 @@ func (t *Telemetry) Send() {
 	h := http.Header{}
 	h.Add("Content-Type", "application/json")
 	h.Add("X-Pendo-Integration-Key", t.PendoToken)
-	t.client.SendRequest(http.MethodPost, t.BaseURL+t.Endpoint, bytes.NewReader(b), h, nil)
+	res, err := t.client.SendRequest(http.MethodPost, t.BaseURL+t.Endpoint, bytes.NewReader(b), h, nil)
+	if err != nil {
+		log.Entry().Println(err)
+	}
+	log.Entry().Println(res.Status)
 }
 
 func (t *Telemetry) logStepTelemetryData() {
