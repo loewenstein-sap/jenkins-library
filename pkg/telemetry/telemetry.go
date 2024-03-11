@@ -128,8 +128,8 @@ func (t *Telemetry) SetData(customData *CustomData) {
 	t.Pendo = Pendo{
 		Type:       "track",
 		Event:      t.baseData.StepName,
-		AccountID:  "ttestPipelineID",
-		VisitorID:  "ttestPipelineID",
+		AccountID:  "testCriblPipelineID",
+		VisitorID:  "testCriblPipelineID",
 		Timestamp:  time.Now().UnixMilli(),
 		Properties: &t.data,
 	}
