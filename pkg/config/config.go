@@ -234,6 +234,9 @@ func (c *Config) GetStepConfig(flagValues map[string]interface{}, paramJSON stri
 		}
 	}
 
+	fmt.Printf("!Flag values: %v\n", flagValues)
+	fmt.Printf("!Filter params: %v\n", filters.Parameters)
+	fmt.Printf("!Vault filter: %v\n", vaultFilter)
 	// merge command line flags
 	if flagValues != nil {
 		flagFilter := append(filters.Parameters, vaultFilter...)
