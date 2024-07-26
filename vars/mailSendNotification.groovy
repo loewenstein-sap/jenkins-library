@@ -83,9 +83,6 @@ void call(Map parameters = [:]) {
         // load default & individual configuration
         Map config = ConfigurationHelper.newInstance(this)
             .loadStepDefaults([:], stageName)
-            .mixinGeneralConfig(script.commonPipelineEnvironment, GENERAL_CONFIG_KEYS)
-            .mixinStepConfig(script.commonPipelineEnvironment, STEP_CONFIG_KEYS)
-            .mixinStageConfig(script.commonPipelineEnvironment, stageName, STEP_CONFIG_KEYS)
             .mixin(
                 projectName: script.currentBuild.fullProjectName,
                 displayName: script.currentBuild.displayName,
@@ -93,6 +90,9 @@ void call(Map parameters = [:]) {
                 gitUrl: script.commonPipelineEnvironment.getGitSshUrl(),
                 gitCommitId: script.commonPipelineEnvironment.getGitCommitId()
             )
+            .mixinGeneralConfig(script.commonPipelineEnvironment, GENERAL_CONFIG_KEYS)
+            .mixinStepConfig(script.commonPipelineEnvironment, STEP_CONFIG_KEYS)
+            .mixinStageConfig(script.commonPipelineEnvironment, stageName, STEP_CONFIG_KEYS)
             .mixin(parameters, PARAMETER_KEYS)
             .use()
 
