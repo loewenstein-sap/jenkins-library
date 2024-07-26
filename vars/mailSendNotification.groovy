@@ -80,6 +80,8 @@ void call(Map parameters = [:]) {
         def script = checkScript(this, parameters) ?: this
         String stageName = parameters.stageName ?: env.STAGE_NAME
 
+        echo "vstarostin/mail-send-notification"
+
         // load default & individual configuration
         Map config = ConfigurationHelper.newInstance(this)
             .loadStepDefaults([:], stageName)
