@@ -240,6 +240,9 @@ func Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		log.SetErrorCategory(log.ErrorConfiguration)
 		log.Entry().WithError(err).Fatal("configuration error")
+
+		exposeEnvVarToNextStep()
+		return
 	}
 	exposeEnvVarToNextStep()
 }
@@ -258,16 +261,16 @@ func exposeEnvVarToNextStep() {
 	githubEnvFile := os.Getenv("GITHUB_ENV")
 	f, err := os.OpenFile(githubEnvFile, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
-		log.Entry().Fatal(err)
+		log.Entry().Error(err)
 	}
 	if _, err := f.Write([]byte(fmt.Sprintf("%s=%s\n", gcpPubsubTokenKey, os.Getenv(gcpPubsubTokenKey)))); err != nil {
-		log.Entry().Fatal(err)
+		log.Entry().Error(err)
 	}
 	if _, err := f.Write([]byte(fmt.Sprintf("%s=%s\n", gcpPubsubTokenExpiryKey, os.Getenv(gcpPubsubTokenExpiryKey)))); err != nil {
-		log.Entry().Fatal(err)
+		log.Entry().Error(err)
 	}
 	if err := f.Close(); err != nil {
-		log.Entry().Fatal(err)
+		log.Entry().Error(err)
 	}
 }
 
