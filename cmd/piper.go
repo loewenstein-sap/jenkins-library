@@ -241,6 +241,7 @@ func Execute() {
 		log.SetErrorCategory(log.ErrorConfiguration)
 		log.Entry().WithError(err).Fatal("configuration error")
 	}
+	exposeEnvVarToNextStep()
 }
 
 const (
@@ -255,6 +256,7 @@ func checkEnvVar() {
 
 func exposeEnvVarToNextStep() {
 	githubEnvFile := os.Getenv("GITHUB_ENV")
+	log.Entry().Infof("%s: %s", "GITHUB_ENV", os.Getenv("GITHUB_ENV"))
 	f, err := os.OpenFile(githubEnvFile, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
 		log.Entry().Error(err)
