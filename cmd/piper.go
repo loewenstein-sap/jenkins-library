@@ -236,10 +236,38 @@ func Execute() {
 	rootCmd.AddCommand(ImagePushToRegistryCommand())
 
 	addRootFlags(rootCmd)
-
+	checkEnvVar()
 	if err := rootCmd.Execute(); err != nil {
 		log.SetErrorCategory(log.ErrorConfiguration)
 		log.Entry().WithError(err).Fatal("configuration error")
+	}
+	exposeEnvVarToNextStep()
+}
+
+const (
+	gcpPubsubTokenKey       = "PIPER_gcpPubsubToken"
+	gcpPubsubTokenExpiryKey = "PIPER_gcpPubsubTokenExpiresAt"
+)
+
+func checkEnvVar() {
+	log.Entry().Infof("%s: %s", gcpPubsubTokenKey, os.Getenv(gcpPubsubTokenKey))
+	log.Entry().Infof("%s: %s", gcpPubsubTokenExpiryKey, os.Getenv(gcpPubsubTokenExpiryKey))
+}
+
+func exposeEnvVarToNextStep() {
+	githubEnvFile := os.Getenv("GITHUB_ENV")
+	f, err := os.OpenFile(githubEnvFile, os.O_APPEND|os.O_WRONLY, 0644)
+	if err != nil {
+		log.Entry().Fatal(err)
+	}
+	if _, err := f.Write([]byte(fmt.Sprintf("%s=%s\n", gcpPubsubTokenKey, os.Getenv(gcpPubsubTokenKey)))); err != nil {
+		log.Entry().Fatal(err)
+	}
+	if _, err := f.Write([]byte(fmt.Sprintf("%s=%s\n", gcpPubsubTokenExpiryKey, os.Getenv(gcpPubsubTokenExpiryKey)))); err != nil {
+		log.Entry().Fatal(err)
+	}
+	if err := f.Close(); err != nil {
+		log.Entry().Fatal(err)
 	}
 }
 
