@@ -140,6 +140,8 @@ Authentication to GCP is handled by an OIDC token received from, for example, Va
 			gcpPublishEvent(stepConfig, &stepTelemetryData)
 			stepTelemetryData.ErrorCode = "0"
 			log.Entry().Info("SUCCESS")
+
+			exposeEnvVarToNextStep()
 		},
 	}
 

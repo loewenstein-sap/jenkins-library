@@ -240,11 +240,7 @@ func Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		log.SetErrorCategory(log.ErrorConfiguration)
 		log.Entry().WithError(err).Fatal("configuration error")
-
-		exposeEnvVarToNextStep()
-		return
 	}
-	exposeEnvVarToNextStep()
 }
 
 const (
