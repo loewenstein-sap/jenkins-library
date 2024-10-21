@@ -34,7 +34,7 @@ void call(Map parameters = [:], String stepName, String metadataFile, List crede
         withEnv([
             "PIPER_parametersJSON=${groovy.json.JsonOutput.toJson(stepParameters)}",
             "PIPER_correlationID=${env.BUILD_URL}",
-            "PIPER_gcpPubsubToken=123"
+            "PIPER_gcpPubsubToken=${env.PIPER_gcpPubsubToken}"
             //ToDo: check if parameters make it into docker image on JaaS
         ]) {
             String defaultConfigArgs = getCustomDefaultConfigsArg()
@@ -90,6 +90,7 @@ void call(Map parameters = [:], String stepName, String metadataFile, List crede
                         InfluxData.readFromDisk(script)
                         utils.stash name: 'pipelineStepReports', includes: '.pipeline/stepReports/**', allowEmpty: true
                     }
+                    env.PIPER_gcpPubsubToken = "${PIPER_gcpPubsubToken}"
                 }
             }
         }
