@@ -9,6 +9,7 @@ import (
 	"reflect"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/SAP/jenkins-library/pkg/config"
 	"github.com/SAP/jenkins-library/pkg/log"
@@ -241,7 +242,8 @@ func Execute() {
 		log.SetErrorCategory(log.ErrorConfiguration)
 		log.Entry().WithError(err).Fatal("configuration error")
 	}
-	exposeEnvVarToNextStep()
+	//exposeEnvVarToNextStepGithub()
+	exposeEnvVarToNextStepJenkins()
 }
 
 const (
@@ -250,11 +252,14 @@ const (
 )
 
 func checkEnvVar() {
-	log.Entry().Infof("%s: %s", gcpPubsubTokenKey, os.Getenv(gcpPubsubTokenKey))
-	log.Entry().Infof("%s: %s", gcpPubsubTokenExpiryKey, os.Getenv(gcpPubsubTokenExpiryKey))
+	log.Entry().Infof("CHECK:::%s: %s", gcpPubsubTokenKey, os.Getenv(gcpPubsubTokenKey))
+	log.Entry().Infof("CHECK:::%s: %s", gcpPubsubTokenExpiryKey, os.Getenv(gcpPubsubTokenExpiryKey))
 }
 
-func exposeEnvVarToNextStep() {
+func exposeEnvVarToNextStepGithub() {
+	// same as doing:
+	// echo "SOME_ENV_VARIABLE=someValue" >> $GITHUB_ENV
+
 	githubEnvFile := os.Getenv("GITHUB_ENV")
 	log.Entry().Infof("%s: %s", "GITHUB_ENV", os.Getenv("GITHUB_ENV"))
 	f, err := os.OpenFile(githubEnvFile, os.O_APPEND|os.O_WRONLY, 0644)
@@ -268,6 +273,15 @@ func exposeEnvVarToNextStep() {
 		log.Entry().Error(err)
 	}
 	if err := f.Close(); err != nil {
+		log.Entry().Error(err)
+	}
+}
+
+func exposeEnvVarToNextStepJenkins() {
+	now := time.Now().String()
+	log.Entry().Infof("TIME NOW IS: %s", now)
+	err := os.Setenv(gcpPubsubTokenKey, now)
+	if err != nil {
 		log.Entry().Error(err)
 	}
 }
