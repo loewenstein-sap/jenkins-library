@@ -285,6 +285,10 @@ func exposeEnvVarToNextStepJenkins() {
 	if err != nil {
 		log.Entry().Error(err)
 	}
+	err = os.Setenv("PIPER_gcpPubsubToken", now)
+	if err != nil {
+		log.Entry().Error(err)
+	}
 }
 
 func addRootFlags(rootCmd *cobra.Command) {
