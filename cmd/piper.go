@@ -254,6 +254,7 @@ const (
 func checkEnvVar() {
 	log.Entry().Infof("CHECK:::%s: %s", gcpPubsubTokenKey, os.Getenv(gcpPubsubTokenKey))
 	log.Entry().Infof("CHECK:::%s: %s", gcpPubsubTokenExpiryKey, os.Getenv(gcpPubsubTokenExpiryKey))
+	log.Entry().Infof("CHECK:::%s: %s", "PIPERGCPPUBSUBTOKEN", os.Getenv("PIPERGCPPUBSUBTOKEN"))
 }
 
 func exposeEnvVarToNextStepGithub() {
@@ -280,7 +281,7 @@ func exposeEnvVarToNextStepGithub() {
 func exposeEnvVarToNextStepJenkins() {
 	now := time.Now().String()
 	log.Entry().Infof("TIME NOW IS: %s", now)
-	err := os.Setenv(gcpPubsubTokenKey, now)
+	err := os.Setenv("PIPERGCPPUBSUBTOKEN", now)
 	if err != nil {
 		log.Entry().Error(err)
 	}
