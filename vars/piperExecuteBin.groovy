@@ -79,9 +79,9 @@ void call(Map parameters = [:], String stepName, String metadataFile, List crede
                             try {
                                 credentialWrapper(config, credentialInfo) {
                                     sh "${piperGoPath} ${stepName}${defaultConfigArgs}${customConfigArg}"
+                                    echo "PIPERGCPPUBSUBTOKEN: ${PIPERGCPPUBSUBTOKEN}"
+                                    env.PIPERGCPPUBSUBTOKEN = "${PIPERGCPPUBSUBTOKEN}"
                                 }
-                                echo "PIPERGCPPUBSUBTOKEN: ${PIPERGCPPUBSUBTOKEN}"
-                                PIPERGCPPUBSUBTOKEN = "${PIPERGCPPUBSUBTOKEN}"
                             } finally {
                                 jenkinsUtils.handleStepResults(stepName, failOnMissingReports, failOnMissingLinks)
                             }
